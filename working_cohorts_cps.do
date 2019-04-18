@@ -133,4 +133,4 @@ graph export `"./graphs/birthyr5_employed_`val'.png"', width(1024) replace;
 	into a .gif. This command works on OS X with 'convert' installed, but 
 	the specific command may vary, or the files can be combined using another
 	method. */
-!/sbin/convert -delay 400 ./graphs/birthyr5_employed_1.png -delay 250 ./graphs birthyr5_employed_{2..9}.png -delay 450 ./graphs/birthyr5_employed_10.png ./graphs/employed_5year_cohorts.gif
+!/usr/local/bin/convert -delay 400 ./graphs/birthyr5_employed_1.png -delay 250 ./graphs birthyr5_employed_{2..9}.png -delay 450 ./graphs/birthyr5_employed_10.png ./graphs/employed_5year_cohorts.gif;
