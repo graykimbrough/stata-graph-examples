@@ -1,11 +1,14 @@
-/* EPOP rates by age for prime age individuals, by 5-year birth cohorts 
-	Final version: 
+#delimit ;
+/* EPOP rates by age and gender for prime age individuals,
+	by 5-year birth cohorts
+
+	Final version:
 	https://twitter.com/graykimbrough/status/1117960689166028801
-	*/
-#delimit;
+
+	Gray Kimbrough
+*/
 
 /* Use IPUMS extract of CPS ASEC samples from 1968-2017 with relevant variables:
-
 year
 hflag
 asecwt
@@ -44,7 +47,7 @@ collapse (mean) employed [pweight=finalweight], by(birthyr5 age sex);
 
 /* Convert to percents for better graph display */
 gen pct_employed = employed *100;
-label define percents 0 "0%" 10 "10%" 20 "20%" 30 "30%" 40 "40%" 50 "50%" 
+label define percents 0 "0%" 10 "10%" 20 "20%" 30 "30%" 40 "40%" 50 "50%"
 	60 "60%" 70 "70%" 80 "80%" 90 "90%" 100 "100%";
 label values pct_employed percents;
 
@@ -94,15 +97,16 @@ graph twoway
 		ylabel(50(10)90, valuelabels)
 		xtitle("")
 		xscale(r(25 54))
-		ytitle("") 
-		xlabel(25(5)50) 
+		ytitle("")
+		xlabel(25(5)50)
 		plotregion(margin(zero))
 		text(60 45 `"Born `text'"', size(large))
 		text(88 33 `"Men"', size(large) color(`"24 105 109"'))
 		text(58.8 34 `"Women"', size(large) color(`"219 112 41"'))
 		name(birthyr5_employed_`val', replace)
 		subtitle(`"Percentage employed"', justification(left) margin(b+1 t-1) bexpand)
-		note(`"Source: Civilians in CPS households from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"', margin(l-12 t+2 b-2));
+		note(`"Source: Civilians in CPS households from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"',
+			margin(l-12 t+2 b-2));
 };
 else{;
 graph twoway `graphs'
@@ -112,25 +116,32 @@ graph twoway `graphs'
 		ylabel(50(10)90, valuelabels)
 		xtitle("")
 		xscale(r(25 54))
-		ytitle("") 
-		xlabel(25(5)50) 
+		ytitle("")
+		xlabel(25(5)50)
 		plotregion(margin(zero))
 		text(60 45 `"Born `text'"', size(large))
 		name(birthyr5_employed_`val', replace)
 		subtitle(`"Percentage employed"', justification(left) margin(b+1 t-1) bexpand)
-		note(`"Source: Civilians in CPS households from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"', margin(l-12 t+2 b-2));
+		note(`"Source: Civilians in CPS households from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"',
+		 	margin(l-12 t+2 b-2));
 };
 
 /* Add previous cohort lines, at 20% opacity */
-local graphs = `"`graphs'"' + `" (line pct_employed age if birthyr5 ==`val' & sex==1, lcolor(`"24 105 109%20"') mcolor(`"24 105 109%20"'))
-	(line pct_employed age if birthyr5 ==`val' & sex==2, lcolor(`"219 112 41%20"') mcolor(`"219 112 41%20"'))"';
+local graphs = `"`graphs'"' +
+	`" (line pct_employed age if birthyr5 ==`val' & sex==1,
+		lcolor(`"24 105 109%20"') mcolor(`"24 105 109%20"'))
+	(line pct_employed age if birthyr5 ==`val' & sex==2,
+		lcolor(`"219 112 41%20"') mcolor(`"219 112 41%20"'))"';
 
 /* Export graphs as .png images */
 graph export `"./graphs/birthyr5_employed_`val'.png"', width(1024) replace;
 };
 
 /* Use ImageMagick 'convert' command to combine all of these .png graphs
-	into a .gif. This command works on OS X with 'convert' installed, but 
+	into a .gif. This command works on OS X with 'convert' installed, but
 	the specific command may vary, or the files can be combined using another
 	method. */
-!/usr/local/bin/convert -delay 400 ./graphs/birthyr5_employed_1.png -delay 250 ./graphs birthyr5_employed_{2..9}.png -delay 450 ./graphs/birthyr5_employed_10.png ./graphs/employed_5year_cohorts.gif;
+!/usr/local/bin/convert -delay 400 ./graphs/birthyr5_employed_1.png
+	-delay 250 ./graphs/birthyr5_employed_{2..9}.png
+	-delay 450 ./graphs/birthyr5_employed_10.png
+	./graphs/employed_5year_cohorts.gif;
