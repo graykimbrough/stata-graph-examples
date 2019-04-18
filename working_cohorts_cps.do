@@ -129,9 +129,9 @@ graph twoway `graphs'
 /* Add previous cohort lines, at 20% opacity */
 local graphs = `"`graphs'"' +
 	`" (line pct_employed age if birthyr5 ==`val' & sex==1,
-		lcolor(`"24 105 109%20"') mcolor(`"24 105 109%20"'))
+		lcolor(`"24 105 109%20"'))
 	(line pct_employed age if birthyr5 ==`val' & sex==2,
-		lcolor(`"219 112 41%20"') mcolor(`"219 112 41%20"'))"';
+		lcolor(`"219 112 41%20"'))"';
 
 /* Export graphs as .png images */
 graph export `"./graphs/birthyr5_employed_`val'.png"', width(1024) replace;
