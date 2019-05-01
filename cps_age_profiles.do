@@ -660,3 +660,96 @@ graph drop _all;
 	-delay 100 ./graphs/collgrad_20{10..17}.png
 	-delay 500 ./graphs/collgrad_2018.png
 	./graphs/collgrad.gif;
+
+/************* 8) Percentage living in owned housing ********************/
+use cps_individuals, clear;
+
+/* Limit to 1976 and later, because ownership is not available in 
+	prior years. */
+keep if year>=1976;
+
+/* Generate ownership indicator variable */
+gen owns = ownershp==10 if (~missing(ownershp) & ownershp~=0);
+
+/* Collapse to generate proportion by age and gender */
+collapse (mean) owns [pweight=finalweight], by(year age sex);
+
+/* Convert to a percent and label */
+gen pct_owns = owns * 100;
+label define percents 0 "0%" 10 "10%" 20 "20%" 30 "30%" 40 "40%" 50 "50%"
+	60 "60%" 70 "70%" 80 "80%" 90 "90%" 100 "100%";
+label values pct_owns percents;
+
+/* Initialize locals to store all of the graphs, by gender */
+local graphs_men = "";
+local graphs_women = "";
+
+/* Get all values of sample years */
+levelsof year, local(years);
+
+/* Loop through all years */
+foreach yr of local years{;
+
+/* Graph men and women separately, making sure that y axis range is the same
+	for all graphs. I specify these ranges manually here, as well as the
+	placement of the year. */
+graph twoway `graphs_men'
+	(line pct_owns age if year==`yr' & sex==1, lcolor(`"24 105 109"')),
+		yscale(r(0 90))
+		ylabel(0(10)90, valuelabels)
+		xtitle("")
+		xscale(r(18 64))
+		ytitle("")
+		xlabel(20(5)60)
+		plotregion(margin(zero))
+		text(15 55 `"`yr'"', size(large))
+		name(owns_men_`yr', replace)
+		subtitle(`"Percentage of men living in owned home, by age"', justification(left) margin(b+1 t-1) bexpand)
+		nodraw;
+
+graph twoway `graphs_women'
+	(line pct_owns age if year==`yr' & sex==2, lcolor(`"219 112 41"')),
+		yscale(r(0 90))
+		ylabel(0(10)90, valuelabels)
+		xtitle("")
+		xscale(r(18 64))
+		ytitle("")
+		xlabel(20(5)60)
+		plotregion(margin(zero))
+		text(15 55 `"`yr'"', size(large))
+		name(owns_women_`yr', replace)
+		subtitle(`"Percentage of women living in owned home, by age"', justification(left) margin(b+1 t-1) bexpand)
+		nodraw;
+
+/* Add all previous lines to each graph, at 10% opacity. */
+local graphs_men = `"`graphs_men'"' + `" (line pct_owns age if year==`yr' & sex==1, lcolor(`"24 105 109%10"'))"';
+local graphs_women = `"`graphs_women'"' + `" (line pct_owns age if year==`yr' & sex==2, lcolor(`"219 112 41%10"'))"';
+
+/* Combine graphs and export at a resolution that twitter will accept
+	once converted to a .gif (without having to mess with resizing). */
+graph combine owns_men_`yr' owns_women_`yr',
+	rows(1)
+	note(`"Source: Civilian, non-institutional American population from 1976-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	xsize(10) ysize(5) iscale(*1.3)
+	name(combined_owns_`yr', replace);
+graph export `"./graphs/owns_`yr'.png"', width(1024) replace;
+graph drop _all;
+};
+
+/* Call ImageMagick 'convert' to create the .gif from all of the .png images */
+/* Additional delay at years ending in 8 */
+!/usr/local/bin/convert 
+	-delay 300 ./graphs/owns_1976.png
+	-delay 100 ./graphs/owns_1977.png
+	-delay 250 ./graphs/owns_1978.png
+	-delay 100 ./graphs/owns_19{79..87}.png
+	-delay 250 ./graphs/owns_1988.png
+	-delay 100 ./graphs/owns_19{89..97}.png
+	-delay 250 ./graphs/owns_1998.png
+	-delay 100 ./graphs/owns_1999.png
+	-delay 100 ./graphs/owns_200{0..7}.png
+	-delay 250 ./graphs/owns_2008.png
+	-delay 100 ./graphs/owns_2009.png
+	-delay 100 ./graphs/owns_20{10..17}.png
+	-delay 500 ./graphs/owns_2018.png
+	./graphs/owns.gif;
