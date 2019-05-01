@@ -425,8 +425,8 @@ foreach yr of local years{;
 	placement of the year. */
 graph twoway `graphs_men'
 	(line pct_with_young_children age if year==`yr' & sex==1, lcolor(`"24 105 109"')),
-		yscale(r(0 100))
-		ylabel(0(10)100, valuelabels)
+		yscale(r(0 65))
+		ylabel(0(10)60, valuelabels)
 		xtitle("")
 		xscale(r(18 64))
 		ytitle("")
@@ -439,8 +439,8 @@ graph twoway `graphs_men'
 
 graph twoway `graphs_women'
 	(line pct_with_young_children age if year==`yr' & sex==2, lcolor(`"219 112 41"')),
-		yscale(r(0 100))
-		ylabel(0(10)100, valuelabels)
+		yscale(r(0 65))
+		ylabel(0(10)60, valuelabels)
 		xtitle("")
 		xscale(r(18 64))
 		ytitle("")
