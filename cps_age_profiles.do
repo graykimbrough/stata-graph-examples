@@ -104,7 +104,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_married age if year==`yr'
 	once converted to a .gif (without having to mess with resizing). */
 graph combine married_men_`yr' married_women_`yr',
 	rows(1)
-	note(`"Source: Civilians in CPS households from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(combined_married_`yr', replace);
 graph export `"./graphs/married_`yr'.png"', width(1024) replace;
@@ -195,7 +195,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_employed age if year==`yr
 	once converted to a .gif (without having to mess with resizing). */
 graph combine employed_men_`yr' employed_women_`yr',
 	rows(1)
-	note(`"Source: Civilians in CPS households from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(combined_employed_`yr', replace);
 graph export `"./graphs/employed_`yr'.png"', width(1024) replace;
@@ -283,7 +283,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_ever_married age if year=
 	once converted to a .gif (without having to mess with resizing). */
 graph combine ever_married_men_`yr' ever_married_women_`yr',
 	rows(1)
-	note(`"Source: Civilians in CPS households from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(combined_ever_married_`yr', replace);
 graph export `"./graphs/ever_married_`yr'.png"', width(1024) replace;
@@ -307,3 +307,179 @@ graph drop _all;
 	-delay 100 ./graphs/ever_married_20{10..17}.png
 	-delay 500 ./graphs/ever_married_2018.png
 	./graphs/ever_married.gif;
+
+/************* 4) Percentage living with own children ********************/
+use cps_individuals, clear;
+/* Generate marriage indicator variable */
+gen lives_with_children = nchild>0 if ~missing(nchild);
+
+/* Collapse to generate proportion by age and gender */
+collapse (mean) lives_with_children [pweight=finalweight], by(year age sex);
+
+/* Convert to a percent and label */
+gen pct_lives_with_children = lives_with_children * 100;
+label define percents 0 "0%" 10 "10%" 20 "20%" 30 "30%" 40 "40%" 50 "50%"
+	60 "60%" 70 "70%" 80 "80%" 90 "90%" 100 "100%";
+label values pct_lives_with_children percents;
+
+/* Initialize locals to store all of the graphs, by gender */
+local graphs_men = "";
+local graphs_women = "";
+
+/* Get all values of sample years */
+levelsof year, local(years);
+
+/* Loop through all years */
+foreach yr of local years{;
+
+/* Graph men and women separately, making sure that y axis range is the same
+	for all graphs. I specify these ranges manually here, as well as the
+	placement of the year. */
+graph twoway `graphs_men'
+	(line pct_lives_with_children age if year==`yr' & sex==1, lcolor(`"24 105 109"')),
+		yscale(r(0 100))
+		ylabel(0(10)100, valuelabels)
+		xtitle("")
+		xscale(r(18 64))
+		ytitle("")
+		xlabel(20(5)60)
+		plotregion(margin(zero))
+		text(15 55 `"`yr'"', size(large))
+		name(lives_with_children_men_`yr', replace)
+		subtitle(`"Percentage of men living with own children"', justification(left) margin(b+1 t-1) bexpand)
+		nodraw;
+
+graph twoway `graphs_women'
+	(line pct_lives_with_children age if year==`yr' & sex==2, lcolor(`"219 112 41"')),
+		yscale(r(0 100))
+		ylabel(0(10)100, valuelabels)
+		xtitle("")
+		xscale(r(18 64))
+		ytitle("")
+		xlabel(20(5)60)
+		plotregion(margin(zero))
+		text(15 55 `"`yr'"', size(large))
+		name(lives_with_children_women_`yr', replace)
+		subtitle(`"Percentage of women living with own children"', justification(left) margin(b+1 t-1) bexpand)
+		nodraw;
+
+/* Add all previous lines to each graph, at 10% opacity. */
+local graphs_men = `"`graphs_men'"' + `" (line pct_lives_with_children age if year==`yr' & sex==1, lcolor(`"24 105 109%10"'))"';
+local graphs_women = `"`graphs_women'"' + `" (line pct_lives_with_children age if year==`yr' & sex==2, lcolor(`"219 112 41%10"'))"';
+
+/* Combine graphs and export at a resolution that twitter will accept
+	once converted to a .gif (without having to mess with resizing). */
+graph combine lives_with_children_men_`yr' lives_with_children_women_`yr',
+	rows(1)
+	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	xsize(10) ysize(5) iscale(*1.3)
+	name(lives_with_children_`yr', replace);
+graph export `"./graphs/lives_with_children_`yr'.png"', width(1024) replace;
+graph drop _all;
+};
+
+/* Call ImageMagick 'convert' to create the .gif from all of the .png images */
+/* Additional delay at years ending in 8 */
+!/usr/local/bin/convert 
+	-delay 300 ./graphs/lives_with_children_1968.png
+	-delay 100 ./graphs/lives_with_children_19{69..77}.png
+	-delay 250 ./graphs/lives_with_children_1978.png
+	-delay 100 ./graphs/lives_with_children_19{79..87}.png
+	-delay 250 ./graphs/lives_with_children_1988.png
+	-delay 100 ./graphs/lives_with_children_19{89..97}.png
+	-delay 250 ./graphs/lives_with_children_1998.png
+	-delay 100 ./graphs/lives_with_children_1999.png
+	-delay 100 ./graphs/lives_with_children_200{0..7}.png
+	-delay 250 ./graphs/lives_with_children_2008.png
+	-delay 100 ./graphs/lives_with_children_2009.png
+	-delay 100 ./graphs/lives_with_children_20{10..17}.png
+	-delay 500 ./graphs/lives_with_children_2018.png
+	./graphs/lives_with_children.gif;
+
+/********** 5) Percentage living with own children younger than 5 *************/
+use cps_individuals, clear;
+/* Generate marriage indicator variable */
+gen with_young_children = nchlt5>0 if ~missing(nchild);
+
+/* Collapse to generate proportion by age and gender */
+collapse (mean) with_young_children [pweight=finalweight], by(year age sex);
+
+/* Convert to a percent and label */
+gen pct_with_young_children = with_young_children * 100;
+label define percents 0 "0%" 10 "10%" 20 "20%" 30 "30%" 40 "40%" 50 "50%"
+	60 "60%" 70 "70%" 80 "80%" 90 "90%" 100 "100%";
+label values pct_with_young_children percents;
+
+/* Initialize locals to store all of the graphs, by gender */
+local graphs_men = "";
+local graphs_women = "";
+
+/* Get all values of sample years */
+levelsof year, local(years);
+
+/* Loop through all years */
+foreach yr of local years{;
+
+/* Graph men and women separately, making sure that y axis range is the same
+	for all graphs. I specify these ranges manually here, as well as the
+	placement of the year. */
+graph twoway `graphs_men'
+	(line pct_with_young_children age if year==`yr' & sex==1, lcolor(`"24 105 109"')),
+		yscale(r(0 100))
+		ylabel(0(10)100, valuelabels)
+		xtitle("")
+		xscale(r(18 64))
+		ytitle("")
+		xlabel(20(5)60)
+		plotregion(margin(zero))
+		text(15 55 `"`yr'"', size(large))
+		name(with_young_children_men_`yr', replace)
+		subtitle(`"Percentage of men living with own children under 5"', justification(left) margin(b+1 t-1) bexpand)
+		nodraw;
+
+graph twoway `graphs_women'
+	(line pct_with_young_children age if year==`yr' & sex==2, lcolor(`"219 112 41"')),
+		yscale(r(0 100))
+		ylabel(0(10)100, valuelabels)
+		xtitle("")
+		xscale(r(18 64))
+		ytitle("")
+		xlabel(20(5)60)
+		plotregion(margin(zero))
+		text(15 55 `"`yr'"', size(large))
+		name(with_young_children_women_`yr', replace)
+		subtitle(`"Percentage of women living with own children<5"', justification(left) margin(b+1 t-1) bexpand)
+		nodraw;
+
+/* Add all previous lines to each graph, at 10% opacity. */
+local graphs_men = `"`graphs_men'"' + `" (line pct_with_young_children age if year==`yr' & sex==1, lcolor(`"24 105 109%10"'))"';
+local graphs_women = `"`graphs_women'"' + `" (line pct_with_young_children age if year==`yr' & sex==2, lcolor(`"219 112 41%10"'))"';
+
+/* Combine graphs and export at a resolution that twitter will accept
+	once converted to a .gif (without having to mess with resizing). */
+graph combine with_young_children_men_`yr' with_young_children_women_`yr',
+	rows(1)
+	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	xsize(10) ysize(5) iscale(*1.3)
+	name(with_young_children_`yr', replace);
+graph export `"./graphs/with_young_children_`yr'.png"', width(1024) replace;
+graph drop _all;
+};
+
+/* Call ImageMagick 'convert' to create the .gif from all of the .png images */
+/* Additional delay at years ending in 8 */
+!/usr/local/bin/convert 
+	-delay 300 ./graphs/with_young_children_1968.png
+	-delay 100 ./graphs/with_young_children_19{69..77}.png
+	-delay 250 ./graphs/with_young_children_1978.png
+	-delay 100 ./graphs/with_young_children_19{79..87}.png
+	-delay 250 ./graphs/with_young_children_1988.png
+	-delay 100 ./graphs/with_young_children_19{89..97}.png
+	-delay 250 ./graphs/with_young_children_1998.png
+	-delay 100 ./graphs/with_young_children_1999.png
+	-delay 100 ./graphs/with_young_children_200{0..7}.png
+	-delay 250 ./graphs/with_young_children_2008.png
+	-delay 100 ./graphs/with_young_children_2009.png
+	-delay 100 ./graphs/with_young_children_20{10..17}.png
+	-delay 500 ./graphs/with_young_children_2018.png
+	./graphs/with_young_children.gif;
