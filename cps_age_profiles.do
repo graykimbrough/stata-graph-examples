@@ -602,28 +602,28 @@ foreach yr of local years{;
 	placement of the year. */
 graph twoway `graphs_men'
 	(line pct_collgrad age if year==`yr' & sex==1, lcolor(`"24 105 109"')),
-		yscale(r(0 100))
-		ylabel(0(10)100, valuelabels)
+		yscale(r(0 50))
+		ylabel(0(10)50, valuelabels)
 		xtitle("")
 		xscale(r(18 64))
 		ytitle("")
 		xlabel(20(5)60)
 		plotregion(margin(zero))
-		text(15 55 `"`yr'"', size(large))
+		text(5 55 `"`yr'"', size(large))
 		name(collgrad_men_`yr', replace)
 		subtitle(`"Percentage of men with bachelor's degrees, by age"', justification(left) margin(b+1 t-1) bexpand)
 		nodraw;
 
 graph twoway `graphs_women'
 	(line pct_collgrad age if year==`yr' & sex==2, lcolor(`"219 112 41"')),
-		yscale(r(0 100))
-		ylabel(0(10)100, valuelabels)
+		yscale(r(0 50))
+		ylabel(0(10)50, valuelabels)
 		xtitle("")
 		xscale(r(18 64))
 		ytitle("")
 		xlabel(20(5)60)
 		plotregion(margin(zero))
-		text(15 55 `"`yr'"', size(large))
+		text(5 55 `"`yr'"', size(large))
 		name(collgrad_women_`yr', replace)
 		subtitle(`"Percentage of women with bachelor's degrees, by age"', justification(left) margin(b+1 t-1) bexpand)
 		nodraw;
