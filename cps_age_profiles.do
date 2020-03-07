@@ -1,10 +1,10 @@
 #delimit ;
 /* Create profiles by age and gender for 10 characteristics over 51 years of
-  CPS ASEC data from IPUMS. 
-  
+  CPS ASEC data from IPUMS.
+
   Final figure: https://twitter.com/graykimbrough/status/1122535539477868545
-  
-  Author: Gray Kimbrough, @graykimbrough 
+
+  Author: Gray Kimbrough, @graykimbrough
 */
 
 /* Load data: IPUMS dataset containing, at a minimum (for all of these figures)
@@ -113,7 +113,7 @@ graph drop _all;
 
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
-!/usr/local/bin/convert 
+!/usr/local/bin/convert
 	-delay 300 ./graphs/married_1968.png
 	-delay 100 ./graphs/married_19{69..77}.png
 	-delay 250 ./graphs/married_1978.png
@@ -128,7 +128,7 @@ graph drop _all;
 	-delay 100 ./graphs/married_20{10..17}.png
 	-delay 500 ./graphs/married_2018.png
 	./graphs/married.gif;
-	
+
 /************* 2) Percentage employed ********************/
 use cps_individuals, clear;
 /* Generate employment indicator variable */
@@ -155,9 +155,9 @@ foreach yr of local years{;
 
 /* Graph men and women separately, making sure that y axis range is the same
 	for all graphs. I specify these ranges manually here, as well as the
-	placement of the year. 
+	placement of the year.
 	These are copied from the married code, except that I expanded Y value
-	ranges to 100. 
+	ranges to 100.
 */
 graph twoway `graphs_men'
 	(line pct_employed age if year==`yr' & sex==1, lcolor(`"24 105 109"')),
@@ -204,7 +204,7 @@ graph drop _all;
 
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
-!/usr/local/bin/convert 
+!/usr/local/bin/convert
 	-delay 300 ./graphs/employed_1968.png
 	-delay 100 ./graphs/employed_19{69..77}.png
 	-delay 250 ./graphs/employed_1978.png
@@ -219,7 +219,7 @@ graph drop _all;
 	-delay 100 ./graphs/employed_20{10..17}.png
 	-delay 500 ./graphs/employed_2018.png
 	./graphs/employed.gif;
-	
+
 /************* 3) Percentage ever married ********************/
 use cps_individuals, clear;
 /* Generate ever-married indicator variable */
@@ -292,7 +292,7 @@ graph drop _all;
 
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
-!/usr/local/bin/convert 
+!/usr/local/bin/convert
 	-delay 300 ./graphs/ever_married_1968.png
 	-delay 100 ./graphs/ever_married_19{69..77}.png
 	-delay 250 ./graphs/ever_married_1978.png
@@ -380,7 +380,7 @@ graph drop _all;
 
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
-!/usr/local/bin/convert 
+!/usr/local/bin/convert
 	-delay 300 ./graphs/lives_with_children_1968.png
 	-delay 100 ./graphs/lives_with_children_19{69..77}.png
 	-delay 250 ./graphs/lives_with_children_1978.png
@@ -468,7 +468,7 @@ graph drop _all;
 
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
-!/usr/local/bin/convert 
+!/usr/local/bin/convert
 	-delay 300 ./graphs/with_young_children_1968.png
 	-delay 100 ./graphs/with_young_children_19{69..77}.png
 	-delay 250 ./graphs/with_young_children_1978.png
@@ -486,7 +486,7 @@ graph drop _all;
 
 /************* 6) Percentage high school graduates ********************/
 use cps_individuals, clear;
-/* Generate college draduate indicator variable */
+/* Generate high school graduate indicator variable */
 gen hsgrad = educ>=72 if (~missing(educ) & educ~=999);
 
 /* Collapse to generate proportion by age and gender */
@@ -547,7 +547,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_hsgrad age if year==`yr' 
 	once converted to a .gif (without having to mess with resizing). */
 graph combine hsgrad_men_`yr' hsgrad_women_`yr',
 	rows(1)
-	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"' 
+	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"'
 		`"Includes those who completed 12 years of education with unclear diploma status."')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(combined_hsgrad_`yr', replace);
@@ -557,7 +557,7 @@ graph drop _all;
 
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
-!/usr/local/bin/convert 
+!/usr/local/bin/convert
 	-delay 300 ./graphs/hsgrad_1968.png
 	-delay 100 ./graphs/hsgrad_19{69..77}.png
 	-delay 250 ./graphs/hsgrad_1978.png
@@ -575,7 +575,7 @@ graph drop _all;
 
 /************* 7) Percentage college graduates ********************/
 use cps_individuals, clear;
-/* Generate college draduate indicator variable */
+/* Generate college graduate indicator variable */
 gen collgrad = educ>=110 if (~missing(educ) & educ~=999);
 
 /* Collapse to generate proportion by age and gender */
@@ -645,7 +645,7 @@ graph drop _all;
 
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
-!/usr/local/bin/convert 
+!/usr/local/bin/convert
 	-delay 300 ./graphs/collgrad_1968.png
 	-delay 100 ./graphs/collgrad_19{69..77}.png
 	-delay 250 ./graphs/collgrad_1978.png
@@ -664,7 +664,7 @@ graph drop _all;
 /************* 8) Percentage living in owned housing ********************/
 use cps_individuals, clear;
 
-/* Limit to 1976 and later, because ownership is not available in 
+/* Limit to 1976 and later, because ownership is not available in
 	prior years. */
 keep if year>=1976;
 
@@ -738,7 +738,7 @@ graph drop _all;
 
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
-!/usr/local/bin/convert 
+!/usr/local/bin/convert
 	-delay 300 ./graphs/owns_1976.png
 	-delay 100 ./graphs/owns_1977.png
 	-delay 250 ./graphs/owns_1978.png
@@ -828,7 +828,7 @@ graph drop _all;
 
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
-!/usr/local/bin/convert 
+!/usr/local/bin/convert
 	-delay 300 ./graphs/lives_with_parents_1968.png
 	-delay 100 ./graphs/lives_with_parents_19{69..77}.png
 	-delay 250 ./graphs/lives_with_parents_1978.png
@@ -916,18 +916,17 @@ graph drop _all;
 
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
-!/usr/local/bin/convert 
+!/usr/local/bin/convert
 	-delay 300 ./graphs/vet_1968.png
-	-delay 100 ./graphs/vet_19{69..77}.png
-	-delay 250 ./graphs/vet_1978.png
-	-delay 100 ./graphs/vet_19{79..87}.png
-	-delay 250 ./graphs/vet_1988.png
-	-delay 100 ./graphs/vet_19{89..97}.png
-	-delay 250 ./graphs/vet_1998.png
-	-delay 100 ./graphs/vet_1999.png
-	-delay 100 ./graphs/vet_200{0..7}.png
-	-delay 250 ./graphs/vet_2008.png
-	-delay 100 ./graphs/vet_2009.png
-	-delay 100 ./graphs/vet_20{10..17}.png
-	-delay 500 ./graphs/vet_2018.png
+	-delay 250 ./graphs/vet_1969.png
+	-delay 100 ./graphs/vet_19{70..78}.png
+	-delay 250 ./graphs/vet_1979.png
+	-delay 100 ./graphs/vet_19{80..88}.png
+	-delay 250 ./graphs/vet_1989.png
+	-delay 100 ./graphs/vet_19{90..98}.png
+	-delay 250 ./graphs/vet_1999.png
+	-delay 100 ./graphs/vet_200{0..8}.png
+	-delay 250 ./graphs/vet_2009.png
+	-delay 100 ./graphs/vet_20{10..18}.png
+	-delay 500 ./graphs/vet_2019.png
 	./graphs/vet.gif;
