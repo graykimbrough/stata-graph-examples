@@ -8,7 +8,7 @@
 */
 
 /* Load data: IPUMS dataset containing, at a minimum (for all of these figures)
-	for all CPS ASEC samples from 1968-2018:
+	for all CPS ASEC samples from 1968-2019:
 	YEAR
 	HFLAG
 	ASECWT
@@ -24,7 +24,7 @@
 	EMPSTAT
 	EDUC
 */
-use cps_00125.dta, clear;
+use cps_00152.dta, clear;
 
 /* My usual code to adjust CPS weights. */
 gen finalweight = asecwt ;
@@ -104,7 +104,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_married age if year==`yr'
 	once converted to a .gif (without having to mess with resizing). */
 graph combine married_men_`yr' married_women_`yr',
 	rows(1)
-	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	note(`"Source: Civilian, non-institutional American population from 1968-2019 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(combined_married_`yr', replace);
 graph export `"./graphs/married_`yr'.png"', width(1024) replace;
@@ -115,18 +115,17 @@ graph drop _all;
 /* Additional delay at years ending in 8 */
 !/usr/local/bin/convert
 	-delay 300 ./graphs/married_1968.png
-	-delay 100 ./graphs/married_19{69..77}.png
-	-delay 250 ./graphs/married_1978.png
-	-delay 100 ./graphs/married_19{79..87}.png
-	-delay 250 ./graphs/married_1988.png
-	-delay 100 ./graphs/married_19{89..97}.png
-	-delay 250 ./graphs/married_1998.png
-	-delay 100 ./graphs/married_1999.png
-	-delay 100 ./graphs/married_200{0..7}.png
-	-delay 250 ./graphs/married_2008.png
-	-delay 100 ./graphs/married_2009.png
-	-delay 100 ./graphs/married_20{10..17}.png
-	-delay 500 ./graphs/married_2018.png
+	-delay 250 ./graphs/married_1969.png
+	-delay 100 ./graphs/married_197{0..8}.png
+	-delay 250 ./graphs/married_1979.png
+	-delay 100 ./graphs/married_198{0..8}.png
+	-delay 250 ./graphs/married_1989.png
+	-delay 100 ./graphs/married_199{0..8}.png
+	-delay 250 ./graphs/married_1999.png
+	-delay 100 ./graphs/married_200{0..8}.png
+	-delay 250 ./graphs/married_2009.png
+	-delay 100 ./graphs/married_20{10..18}.png
+	-delay 500 ./graphs/married_2019.png
 	./graphs/married.gif;
 
 /************* 2) Percentage employed ********************/
@@ -195,7 +194,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_employed age if year==`yr
 	once converted to a .gif (without having to mess with resizing). */
 graph combine employed_men_`yr' employed_women_`yr',
 	rows(1)
-	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	note(`"Source: Civilian, non-institutional American population from 1968-2019 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(combined_employed_`yr', replace);
 graph export `"./graphs/employed_`yr'.png"', width(1024) replace;
@@ -205,19 +204,18 @@ graph drop _all;
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
 !/usr/local/bin/convert
-	-delay 300 ./graphs/employed_1968.png
-	-delay 100 ./graphs/employed_19{69..77}.png
-	-delay 250 ./graphs/employed_1978.png
-	-delay 100 ./graphs/employed_19{79..87}.png
-	-delay 250 ./graphs/employed_1988.png
-	-delay 100 ./graphs/employed_19{89..97}.png
-	-delay 250 ./graphs/employed_1998.png
-	-delay 100 ./graphs/employed_1999.png
-	-delay 100 ./graphs/employed_200{0..7}.png
-	-delay 250 ./graphs/employed_2008.png
-	-delay 100 ./graphs/employed_2009.png
-	-delay 100 ./graphs/employed_20{10..17}.png
-	-delay 500 ./graphs/employed_2018.png
+-delay 300 ./graphs/employed_1968.png
+-delay 250 ./graphs/employed_1969.png
+-delay 100 ./graphs/employed_197{0..8}.png
+-delay 250 ./graphs/employed_1979.png
+-delay 100 ./graphs/employed_198{0..8}.png
+-delay 250 ./graphs/employed_1989.png
+-delay 100 ./graphs/employed_199{0..8}.png
+-delay 250 ./graphs/employed_1999.png
+-delay 100 ./graphs/employed_200{0..8}.png
+-delay 250 ./graphs/employed_2009.png
+-delay 100 ./graphs/employed_20{10..18}.png
+-delay 500 ./graphs/employed_2019.png
 	./graphs/employed.gif;
 
 /************* 3) Percentage ever married ********************/
@@ -283,7 +281,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_ever_married age if year=
 	once converted to a .gif (without having to mess with resizing). */
 graph combine ever_married_men_`yr' ever_married_women_`yr',
 	rows(1)
-	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	note(`"Source: Civilian, non-institutional American population from 1968-2019 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(combined_ever_married_`yr', replace);
 graph export `"./graphs/ever_married_`yr'.png"', width(1024) replace;
@@ -293,19 +291,18 @@ graph drop _all;
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
 !/usr/local/bin/convert
-	-delay 300 ./graphs/ever_married_1968.png
-	-delay 100 ./graphs/ever_married_19{69..77}.png
-	-delay 250 ./graphs/ever_married_1978.png
-	-delay 100 ./graphs/ever_married_19{79..87}.png
-	-delay 250 ./graphs/ever_married_1988.png
-	-delay 100 ./graphs/ever_married_19{89..97}.png
-	-delay 250 ./graphs/ever_married_1998.png
-	-delay 100 ./graphs/ever_married_1999.png
-	-delay 100 ./graphs/ever_married_200{0..7}.png
-	-delay 250 ./graphs/ever_married_2008.png
-	-delay 100 ./graphs/ever_married_2009.png
-	-delay 100 ./graphs/ever_married_20{10..17}.png
-	-delay 500 ./graphs/ever_married_2018.png
+-delay 300 ./graphs/ever_married_1968.png
+-delay 250 ./graphs/ever_married_1969.png
+-delay 100 ./graphs/ever_married_197{0..8}.png
+-delay 250 ./graphs/ever_married_1979.png
+-delay 100 ./graphs/ever_married_198{0..8}.png
+-delay 250 ./graphs/ever_married_1989.png
+-delay 100 ./graphs/ever_married_199{0..8}.png
+-delay 250 ./graphs/ever_married_1999.png
+-delay 100 ./graphs/ever_married_200{0..8}.png
+-delay 250 ./graphs/ever_married_2009.png
+-delay 100 ./graphs/ever_married_20{10..18}.png
+-delay 500 ./graphs/ever_married_2019.png
 	./graphs/ever_married.gif;
 
 /************* 4) Percentage living with own children ********************/
@@ -371,7 +368,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_lives_with_children age i
 	once converted to a .gif (without having to mess with resizing). */
 graph combine lives_with_children_men_`yr' lives_with_children_women_`yr',
 	rows(1)
-	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	note(`"Source: Civilian, non-institutional American population from 1968-2019 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(lives_with_children_`yr', replace);
 graph export `"./graphs/lives_with_children_`yr'.png"', width(1024) replace;
@@ -381,19 +378,18 @@ graph drop _all;
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
 !/usr/local/bin/convert
-	-delay 300 ./graphs/lives_with_children_1968.png
-	-delay 100 ./graphs/lives_with_children_19{69..77}.png
-	-delay 250 ./graphs/lives_with_children_1978.png
-	-delay 100 ./graphs/lives_with_children_19{79..87}.png
-	-delay 250 ./graphs/lives_with_children_1988.png
-	-delay 100 ./graphs/lives_with_children_19{89..97}.png
-	-delay 250 ./graphs/lives_with_children_1998.png
-	-delay 100 ./graphs/lives_with_children_1999.png
-	-delay 100 ./graphs/lives_with_children_200{0..7}.png
-	-delay 250 ./graphs/lives_with_children_2008.png
-	-delay 100 ./graphs/lives_with_children_2009.png
-	-delay 100 ./graphs/lives_with_children_20{10..17}.png
-	-delay 500 ./graphs/lives_with_children_2018.png
+-delay 300 ./graphs/lives_with_children_1968.png
+-delay 250 ./graphs/lives_with_children_1969.png
+-delay 100 ./graphs/lives_with_children_197{0..8}.png
+-delay 250 ./graphs/lives_with_children_1979.png
+-delay 100 ./graphs/lives_with_children_198{0..8}.png
+-delay 250 ./graphs/lives_with_children_1989.png
+-delay 100 ./graphs/lives_with_children_199{0..8}.png
+-delay 250 ./graphs/lives_with_children_1999.png
+-delay 100 ./graphs/lives_with_children_200{0..8}.png
+-delay 250 ./graphs/lives_with_children_2009.png
+-delay 100 ./graphs/lives_with_children_20{10..18}.png
+-delay 500 ./graphs/lives_with_children_2019.png
 	./graphs/lives_with_children.gif;
 
 /********** 5) Percentage living with own children younger than 5 *************/
@@ -459,7 +455,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_with_young_children age i
 	once converted to a .gif (without having to mess with resizing). */
 graph combine with_young_children_men_`yr' with_young_children_women_`yr',
 	rows(1)
-	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	note(`"Source: Civilian, non-institutional American population from 1968-2019 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(with_young_children_`yr', replace);
 graph export `"./graphs/with_young_children_`yr'.png"', width(1024) replace;
@@ -469,19 +465,18 @@ graph drop _all;
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
 !/usr/local/bin/convert
-	-delay 300 ./graphs/with_young_children_1968.png
-	-delay 100 ./graphs/with_young_children_19{69..77}.png
-	-delay 250 ./graphs/with_young_children_1978.png
-	-delay 100 ./graphs/with_young_children_19{79..87}.png
-	-delay 250 ./graphs/with_young_children_1988.png
-	-delay 100 ./graphs/with_young_children_19{89..97}.png
-	-delay 250 ./graphs/with_young_children_1998.png
-	-delay 100 ./graphs/with_young_children_1999.png
-	-delay 100 ./graphs/with_young_children_200{0..7}.png
-	-delay 250 ./graphs/with_young_children_2008.png
-	-delay 100 ./graphs/with_young_children_2009.png
-	-delay 100 ./graphs/with_young_children_20{10..17}.png
-	-delay 500 ./graphs/with_young_children_2018.png
+-delay 300 ./graphs/with_young_children_1968.png
+-delay 250 ./graphs/with_young_children_1969.png
+-delay 100 ./graphs/with_young_children_197{0..8}.png
+-delay 250 ./graphs/with_young_children_1979.png
+-delay 100 ./graphs/with_young_children_198{0..8}.png
+-delay 250 ./graphs/with_young_children_1989.png
+-delay 100 ./graphs/with_young_children_199{0..8}.png
+-delay 250 ./graphs/with_young_children_1999.png
+-delay 100 ./graphs/with_young_children_200{0..8}.png
+-delay 250 ./graphs/with_young_children_2009.png
+-delay 100 ./graphs/with_young_children_20{10..18}.png
+-delay 500 ./graphs/with_young_children_2019.png
 	./graphs/with_young_children.gif;
 
 /************* 6) Percentage high school graduates ********************/
@@ -547,7 +542,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_hsgrad age if year==`yr' 
 	once converted to a .gif (without having to mess with resizing). */
 graph combine hsgrad_men_`yr' hsgrad_women_`yr',
 	rows(1)
-	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"'
+	note(`"Source: Civilian, non-institutional American population from 1968-2019 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"'
 		`"Includes those who completed 12 years of education with unclear diploma status."')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(combined_hsgrad_`yr', replace);
@@ -558,19 +553,18 @@ graph drop _all;
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
 !/usr/local/bin/convert
-	-delay 300 ./graphs/hsgrad_1968.png
-	-delay 100 ./graphs/hsgrad_19{69..77}.png
-	-delay 250 ./graphs/hsgrad_1978.png
-	-delay 100 ./graphs/hsgrad_19{79..87}.png
-	-delay 250 ./graphs/hsgrad_1988.png
-	-delay 100 ./graphs/hsgrad_19{89..97}.png
-	-delay 250 ./graphs/hsgrad_1998.png
-	-delay 100 ./graphs/hsgrad_1999.png
-	-delay 100 ./graphs/hsgrad_200{0..7}.png
-	-delay 250 ./graphs/hsgrad_2008.png
-	-delay 100 ./graphs/hsgrad_2009.png
-	-delay 100 ./graphs/hsgrad_20{10..17}.png
-	-delay 500 ./graphs/hsgrad_2018.png
+-delay 300 ./graphs/hsgrad_1968.png
+-delay 250 ./graphs/hsgrad_1969.png
+-delay 100 ./graphs/hsgrad_197{0..8}.png
+-delay 250 ./graphs/hsgrad_1979.png
+-delay 100 ./graphs/hsgrad_198{0..8}.png
+-delay 250 ./graphs/hsgrad_1989.png
+-delay 100 ./graphs/hsgrad_199{0..8}.png
+-delay 250 ./graphs/hsgrad_1999.png
+-delay 100 ./graphs/hsgrad_200{0..8}.png
+-delay 250 ./graphs/hsgrad_2009.png
+-delay 100 ./graphs/hsgrad_20{10..18}.png
+-delay 500 ./graphs/hsgrad_2019.png
 	./graphs/hsgrad.gif;
 
 /************* 7) Percentage college graduates ********************/
@@ -636,7 +630,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_collgrad age if year==`yr
 	once converted to a .gif (without having to mess with resizing). */
 graph combine collgrad_men_`yr' collgrad_women_`yr',
 	rows(1)
-	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	note(`"Source: Civilian, non-institutional American population from 1968-2019 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(combined_collgrad_`yr', replace);
 graph export `"./graphs/collgrad_`yr'.png"', width(1024) replace;
@@ -646,19 +640,18 @@ graph drop _all;
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
 !/usr/local/bin/convert
-	-delay 300 ./graphs/collgrad_1968.png
-	-delay 100 ./graphs/collgrad_19{69..77}.png
-	-delay 250 ./graphs/collgrad_1978.png
-	-delay 100 ./graphs/collgrad_19{79..87}.png
-	-delay 250 ./graphs/collgrad_1988.png
-	-delay 100 ./graphs/collgrad_19{89..97}.png
-	-delay 250 ./graphs/collgrad_1998.png
-	-delay 100 ./graphs/collgrad_1999.png
-	-delay 100 ./graphs/collgrad_200{0..7}.png
-	-delay 250 ./graphs/collgrad_2008.png
-	-delay 100 ./graphs/collgrad_2009.png
-	-delay 100 ./graphs/collgrad_20{10..17}.png
-	-delay 500 ./graphs/collgrad_2018.png
+-delay 300 ./graphs/collgrad_1968.png
+-delay 250 ./graphs/collgrad_1969.png
+-delay 100 ./graphs/collgrad_197{0..8}.png
+-delay 250 ./graphs/collgrad_1979.png
+-delay 100 ./graphs/collgrad_198{0..8}.png
+-delay 250 ./graphs/collgrad_1989.png
+-delay 100 ./graphs/collgrad_199{0..8}.png
+-delay 250 ./graphs/collgrad_1999.png
+-delay 100 ./graphs/collgrad_200{0..8}.png
+-delay 250 ./graphs/collgrad_2009.png
+-delay 100 ./graphs/collgrad_20{10..18}.png
+-delay 500 ./graphs/collgrad_2019.png
 	./graphs/collgrad.gif;
 
 /************* 8) Percentage living in owned housing ********************/
@@ -739,19 +732,18 @@ graph drop _all;
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
 !/usr/local/bin/convert
-	-delay 300 ./graphs/owns_1976.png
-	-delay 100 ./graphs/owns_1977.png
-	-delay 250 ./graphs/owns_1978.png
-	-delay 100 ./graphs/owns_19{79..87}.png
-	-delay 250 ./graphs/owns_1988.png
-	-delay 100 ./graphs/owns_19{89..97}.png
-	-delay 250 ./graphs/owns_1998.png
-	-delay 100 ./graphs/owns_1999.png
-	-delay 100 ./graphs/owns_200{0..7}.png
-	-delay 250 ./graphs/owns_2008.png
-	-delay 100 ./graphs/owns_2009.png
-	-delay 100 ./graphs/owns_20{10..17}.png
-	-delay 500 ./graphs/owns_2018.png
+-delay 300 ./graphs/owns_1968.png
+-delay 250 ./graphs/owns_1969.png
+-delay 100 ./graphs/owns_197{0..8}.png
+-delay 250 ./graphs/owns_1979.png
+-delay 100 ./graphs/owns_198{0..8}.png
+-delay 250 ./graphs/owns_1989.png
+-delay 100 ./graphs/owns_199{0..8}.png
+-delay 250 ./graphs/owns_1999.png
+-delay 100 ./graphs/owns_200{0..8}.png
+-delay 250 ./graphs/owns_2009.png
+-delay 100 ./graphs/owns_20{10..18}.png
+-delay 500 ./graphs/owns_2019.png
 	./graphs/owns.gif;
 
 /************* 9) Percentage living with parents ********************/
@@ -819,7 +811,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_lives_with_parents age if
 	once converted to a .gif (without having to mess with resizing). */
 graph combine lives_with_parents_men_`yr' lives_with_parents_women_`yr',
 	rows(1)
-	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	note(`"Source: Civilian, non-institutional American population from 1968-2019 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(combined_lives_with_parents_`yr', replace);
 graph export `"./graphs/lives_with_parents_`yr'.png"', width(1024) replace;
@@ -829,19 +821,18 @@ graph drop _all;
 /* Call ImageMagick 'convert' to create the .gif from all of the .png images */
 /* Additional delay at years ending in 8 */
 !/usr/local/bin/convert
-	-delay 300 ./graphs/lives_with_parents_1968.png
-	-delay 100 ./graphs/lives_with_parents_19{69..77}.png
-	-delay 250 ./graphs/lives_with_parents_1978.png
-	-delay 100 ./graphs/lives_with_parents_19{79..87}.png
-	-delay 250 ./graphs/lives_with_parents_1988.png
-	-delay 100 ./graphs/lives_with_parents_19{89..97}.png
-	-delay 250 ./graphs/lives_with_parents_1998.png
-	-delay 100 ./graphs/lives_with_parents_1999.png
-	-delay 100 ./graphs/lives_with_parents_200{0..7}.png
-	-delay 250 ./graphs/lives_with_parents_2008.png
-	-delay 100 ./graphs/lives_with_parents_2009.png
-	-delay 100 ./graphs/lives_with_parents_20{10..17}.png
-	-delay 500 ./graphs/lives_with_parents_2018.png
+-delay 300 ./graphs/lives_with_parents_1968.png
+-delay 250 ./graphs/lives_with_parents_1969.png
+-delay 100 ./graphs/lives_with_parents_197{0..8}.png
+-delay 250 ./graphs/lives_with_parents_1979.png
+-delay 100 ./graphs/lives_with_parents_198{0..8}.png
+-delay 250 ./graphs/lives_with_parents_1989.png
+-delay 100 ./graphs/lives_with_parents_199{0..8}.png
+-delay 250 ./graphs/lives_with_parents_1999.png
+-delay 100 ./graphs/lives_with_parents_200{0..8}.png
+-delay 250 ./graphs/lives_with_parents_2009.png
+-delay 100 ./graphs/lives_with_parents_20{10..18}.png
+-delay 500 ./graphs/lives_with_parents_2019.png
 	./graphs/lives_with_parents.gif;
 
 /************* 10) Percentage veterans ********************/
@@ -907,7 +898,7 @@ local graphs_women = `"`graphs_women'"' + `" (line pct_vet age if year==`yr' & s
 	once converted to a .gif (without having to mess with resizing). */
 graph combine vet_men_`yr' vet_women_`yr',
 	rows(1)
-	note(`"Source: Civilian, non-institutional American population from 1968-2018 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
+	note(`"Source: Civilian, non-institutional American population from 1968-2019 IPUMS CPS ASEC samples (cps.ipums.org), @graykimbrough"')
 	xsize(10) ysize(5) iscale(*1.3)
 	name(combined_vet_`yr', replace);
 graph export `"./graphs/vet_`yr'.png"', width(1024) replace;
