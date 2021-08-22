@@ -3,15 +3,15 @@
 
 By: Gray Kimbrough, @graykimbrough on twitter */
 
-/* Input: IPUMS-CPS extract with all necessary variables for ASEX samples
-  1976-2019:
+/* Input: IPUMS-CPS extract with all necessary variables for ASEC samples
+  1976-2020:
 
   ASECWT
   YEAR
   AGE
   NUMEMPS
   */
-use cps_00151, clear;
+use cps_00177, clear;
 
 /* Approximate birth year this way (since most ASEC responses are from March) */
 gen birthyr = year - age - 1;
@@ -48,7 +48,7 @@ label values pct_switched percents;
 local switched_graphs = `""';
 
 /* Loop through all years */
-forval yr = 1976/2019{;
+forval yr = 1976/2020{;
 
 graph twoway `switched_graphs'
   (line pct_switched age if year == `yr' & generation ==1, lcolor(`"24 105 109"'))
@@ -65,7 +65,7 @@ graph twoway `switched_graphs'
     ytitle("")
     xtitle("")
     subtitle(`"Percentage of workers with multiple sequential employers in previous year"', margin(l+2))
-    note(`"Source: 1976-2019 CPS ASEC samples from IPUMS (cps.ipums.org), @graykimbrough"', margin(t+2 b-2));
+    note(`"Source: 1976-2020 CPS ASEC samples from IPUMS (cps.ipums.org), @graykimbrough"', margin(t+2 b-2));
 
 
 local switched_graphs = `"`switched_graphs'"' + `"   (line pct_switched age if year == `yr' & generation ==1, lcolor(`"24 105 109%10"'))
